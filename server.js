@@ -8,7 +8,7 @@ const server = http.createServer((req, res) => {
         res.statusCode = 200
         res.setHeader("Content-Type", "text/plain");
         res.write("A Lakshmanan")
-        res.write("Email:lakshmanannamneedi143@gmail.com | Phone:9347288588<\n")
+        res.write("Email:lakshmanannamneedi143@gmail.com | Phone:9347288588\n")
         res.write("Address: Chinnamiram,ASR-Nagar,pin:534201,SRKR-college\n")
         res.write("__________________________________________________________________________\n")
         res.write("Profile:\n")
@@ -44,7 +44,7 @@ const server = http.createServer((req, res) => {
         res.end()
     }
 
-    else if (req.url === '/html') {
+    else if (req.url === '/resume') {
         res.statusCode = 200
         res.setHeader("Content-Type", "text/html");
         res.write(`<!DOCTYPE html>
@@ -100,9 +100,7 @@ const server = http.createServer((req, res) => {
             padding: 5px;
             background-color: #e9f5ff;
         }
-        .section ul li:hover {
-            background-color: #cfe8ff;
-        }
+    
     </style>
 </head>
 <body>
@@ -115,7 +113,7 @@ const server = http.createServer((req, res) => {
     </div>
     <div class="section">
         <h2><strong>Profile:</strong></h2>
-        <p>I am Lakshmana,a computer science student.I consider myself a responsible and ordelr person. I am looking forward for my first work <br>experience.</p>
+        <p>I am Lakshmana,a computer science student.I consider myself a responsible and order person. I am looking forward for my first work <br>experience.</p>
     </div>
     <div class="section">
         <h2>Education</h2>
@@ -137,6 +135,10 @@ const server = http.createServer((req, res) => {
             <li>Cyber security in online</li>
             <li>Ds</li>
             <li>Basics in Python</li>
+            <li>HTML</li>
+            <li>Css</li>
+            <li>Javascript</li>
+            <li>Node.Js</li>
         </ul>
         <h2><strong>Technical Skills:</strong></h2>
         <ul>
@@ -167,14 +169,34 @@ const server = http.createServer((req, res) => {
             console.log(body)
             res.end()
         }
-    
-        else if (req.url === '/senddata') {
+        else if (req.method === 'POST' && req.url === '/recivedata') {
             res.statusCode = 200
             res.setHeader("Content-Type", "application/json");
-            const data = { Name: "Teja", Branch: "cse" }
-            res.end(JSON.stringify(data))
+            let body = "";
+            req.on("data", (chunk) => {
+                body += chunk.toString();
+            });
+            console.log(body)
+            res.end()
         }
-    
+        else if (req.url === '/senddata') {
+            res.statusCode = 200
+            
+            res.setHeader("Content-Type", "application/json");
+            const data ={personal:{ Name: "A Lakshmana" },
+                        contact:{ email: "lakshmanannamneedi143@gmail.com", phonenumber: 9347288588},
+                        address:{ City:"Chinnamiram",Town:"ASR-Nagar",pin:534201,college:"SRKR-college"},
+                        education:{ qualification1: {name:"B.tech",institution:"SRKREC",year:"pursuing",cgpa:8.66}, qualification2: {name:"internediate in mpc",institution:"SASI Jr. College",year:2023} ,qualification3: {name:"10th",institution:"SASI SCHOOL",year:2021}},
+                        skills:{ skills: ["HTML", "CSS", "python", "java", "javascript","react","node.js","Git",],Technical:["Ms word","Excel sheet","ppt","Ms installation","Os installation"]}   }
+                        res.end(JSON.stringify(data))
+                    }
+                    else {
+                        res.statusCode = 400
+                        res.end("Page Not Found\n")
+                    }
+                
+                   
+
 });
 
 server.listen(port, () => {
